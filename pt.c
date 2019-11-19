@@ -5,9 +5,9 @@
 #include "pq.h"
 
 
-void pr(int i, PQ_TYPE pri)
+void pr(int i, struct pqi *p)
 {
-  printf("PR %d: %ld\n",i,pri);
+  printf("PR %d: %ld (%d:%d)\n",i,p->pri,p->nx,p->pr);
 }
 
 int main(void)
@@ -26,7 +26,6 @@ int main(void)
   pq_enq(&P,bb,25);
   pq_enq(&P,bb,44);
   pq_enq(&P,cc,30);
-
 
   pq_iter(&P,pr);
 
