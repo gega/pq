@@ -1,7 +1,10 @@
 # pq
 priority queue for fixed number of entities
 
-malloc-free priority queue for embedded systems, implemented as a set o macros, supports only gcc currently. Not protected with locks, not thread safe.
+- malloc-free
+- single header
+- gcc only
+- not thread safe
 
 ## Configuration
 
