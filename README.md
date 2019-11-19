@@ -34,5 +34,6 @@ Processing the item with the lowest priority value of the queue. The returned cl
 void pq_iter(struct pq *p, void (*f)(int idx, PQ_TYPE pri));
 Iterating over the queue and calling the f() function on every item with the idx (client ID) and the current priority.
 
+## Design
 
 The queue is designed for single threaded finite state machine based event driven systems where multiple but fixed number of entities (modes/functions/etc) can add time based events to a common queue which can be used as a single schedule table for waking up at the closest event.
