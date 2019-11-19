@@ -12,6 +12,8 @@ __PQ_SIZE__: maximum number of registered entities for the queue (default: 50)
 
 __PQ_TYPE__: type of the priority field of the queue (default: unsigned long)
 
+__PQ_PRIFLOOR__: minimum value of the priorities (default: 0)
+
 ## Api
 
 ### pq_init
@@ -23,7 +25,7 @@ Initialize the given pq struct which should be provided by the caller
 
 int pq_reg(struct pq *p);
 
-Registering a new client for the queue. Returns the client ID which should be used when calling pq_enq()
+Registering a new client for the queue. Returns the client ID (>0) which should be used when calling pq_enq() or 0 when no more space available
 
 ### pq_enq
 
@@ -35,13 +37,13 @@ Replacing the priority value of the corresponding client ID or add it if it was 
 
 int pq_next(struct pq *p);
 
-Processing the item with the lowest priority value of the queue. The returned client ID has the lowest priority field and it's also removed from the queue. Returns -1 when the queue is empty.
+Processing the item with the lowest priority value of the queue. The returned client ID has the lowest priority field and it's also removed from the queue. Returns 0 when the queue is empty.
 
 ### pq_iter
 
-void pq_iter(struct pq *p, void (*f)(int idx, PQ_TYPE pri));
+void pq_iter(struct pq *p, void (*f)(int idx, struct pqi *elm));
 
-Iterating over the queue and calling the f() function on every item with the idx (client ID) and the current priority.
+Iterating over the queue and calling the f() function on every item with the idx (client ID) and a pointer to the actual item
 
 ## Design
 
