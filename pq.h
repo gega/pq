@@ -44,9 +44,9 @@ struct pqi *pq_next(struct pq *p);
 
 
 #ifdef PQ_STRUCT
-#define pq_next(p) ({ int r=(p)->a[0].nx; (p)->a[0].nx=(p)->a[r].nx; (p)->a[r].nx=(p)->a[r].pr=r; &((p)->a[r].ud); })
+#define pq_next(p) ({ int r=(p)->a[0].nx; (p)->a[0].nx=(p)->a[r].nx; (p)->a[r].nx=(p)->a[r].pr=r; (r==0?NULL:&((p)->a[r].ud)); })
 #else
-#define pq_next(p) ({ int r=(p)->a[0].nx; (p)->a[0].nx=(p)->a[r].nx; (p)->a[r].nx=(p)->a[r].pr=r; &(p)->a[r]; })
+#define pq_next(p) ({ int r=(p)->a[0].nx; (p)->a[0].nx=(p)->a[r].nx; (p)->a[r].nx=(p)->a[r].pr=r; (r==0?NULL:&(p)->a[r]); })
 #endif
 #define pq_peek(p) ( (p)->a[0].nx )
 #ifdef PQ_STRUCT

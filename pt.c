@@ -22,7 +22,6 @@ int main(void)
   struct pq P;
   int aa,bb,cc;
   struct dt *u;
-  int r;
  
   pq_init(&P);
   aa=pq_reg(&P);
@@ -43,11 +42,16 @@ int main(void)
   pq_iter(&P,pr);
 
   printf("topid=%d\n",pq_peek(&P));
-  printf("next=%d\n",pq_next(&P)->id);
-  printf("next=%d\n",pq_next(&P)->id);
-  printf("next=%d\n",pq_next(&P)->id);
-  printf("next=%d\n",pq_next(&P)->id);
-  printf("next=%d\n",pq_next(&P)->id);
+  u=pq_next(&P);
+  printf("next=%d\n",(u!=NULL?u->id:-1));
+  u=pq_next(&P);
+  printf("next=%d\n",(u!=NULL?u->id:-1));
+  u=pq_next(&P);
+  printf("next=%d\n",(u!=NULL?u->id:-1));
+  u=pq_next(&P);
+  printf("next=%d\n",(u!=NULL?u->id:-1));
+  u=pq_next(&P);
+  printf("next=%d\n",(u!=NULL?u->id:-1));
 
   return(0);
 }
