@@ -1,6 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+struct dt
+{
+  int id;
+  void *pnt;
+};
+
+#define PQ_STRUCT struct dt
 
 #include "pq.h"
 
@@ -14,26 +21,33 @@ int main(void)
 {
   struct pq P;
   int aa,bb,cc;
+  struct dt *u;
+  int r;
  
   pq_init(&P);
   aa=pq_reg(&P);
+  u=pq_data(&P,aa);
+  u->id=65;
   bb=pq_reg(&P);
+  pq_data(&P,bb)->id=66;
   cc=pq_reg(&P);
+  pq_data(&P,cc)->id=67;
   printf("reg: %d,%d,%d\n",aa,bb,cc);
 
   pq_enq(&P,aa,10);
   pq_enq(&P,bb,3);
-  pq_enq(&P,bb,25);
-  pq_enq(&P,bb,44);
+  pq_enq(&P,bb,22);
+  pq_enq(&P,bb,1);
   pq_enq(&P,cc,30);
 
   pq_iter(&P,pr);
 
-  printf("next=%d\n",pq_next(&P));
-  printf("next=%d\n",pq_next(&P));
-  printf("next=%d\n",pq_next(&P));
-  printf("next=%d\n",pq_next(&P));
-  printf("next=%d\n",pq_next(&P));
+  printf("topid=%d\n",pq_peek(&P));
+  printf("next=%d\n",pq_next(&P)->id);
+  printf("next=%d\n",pq_next(&P)->id);
+  printf("next=%d\n",pq_next(&P)->id);
+  printf("next=%d\n",pq_next(&P)->id);
+  printf("next=%d\n",pq_next(&P)->id);
 
   return(0);
 }
