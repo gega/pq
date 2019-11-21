@@ -66,9 +66,9 @@ empty. The item will not be removed from the queue.
 
 ### pq_iter
 
-void pq_iter(struct pq *p, void (*f)(int idx, struct pqi *elm));
+void pq_iter(struct pq *p, void (*f)(int id, struct pqi *elm));
 
-Iterating over the queue and calling the __f()__ function on every item with the idx (client ID) and a pointer to the actual
+Iterating over the queue and calling the __f()__ function on every item with the client ID and a pointer to the actual
 item.
 
 ## Design
