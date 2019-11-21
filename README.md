@@ -39,11 +39,11 @@ Replacing the priority value of the corresponding client ID or add it if it was 
 
 ### pq_next
 
-PQ_STRUCT *pq_next(struct pq *p);
+struct pqi *pq_next(struct pq *p);
 
 Consuming the item with the lowest priority of the queue. Returns
-NULL when the queue is empty. Returns __PQ_STRUCT__ pointer when
-provided or __struct pqi *__ item pointer when __PQ_STRUCT__ is not defined.
+NULL when the queue is empty. Returns __struct pqi *__ item pointer which
+have a __ud__ field for the __PQ_STRUCT__ when it is defined.
 The returned item has the lowest priority and it's also removed from the queue.
 
 ### pq_peek
@@ -55,10 +55,14 @@ empty. The item will not be removed from the queue.
 
 ### pq_data
 
-PQ_STRUCT *pq_data(struct pq *p, int id);
+struct pqi *pq_data(struct pq *p, int id);
 
-Returns the __PQ_STRUCT__ pointer of the provided client ID or the __struct pqi__
-pointer when __PQ_STRUCT__ is not defined.
+Returns the __struct pqi *__ pointer of the given client ID.
+
+### pq_peekdata
+
+Returns the __struct pqi *__ pointer of the lowest priority item or NULL when the queue is
+empty. The item will not be removed from the queue.
 
 ### pq_iter
 

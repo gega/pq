@@ -46,15 +46,16 @@ int main(void)
   struct pq P;
   int aa,bb,cc;
   struct dt *u;
+  struct pqi *q;
  
   pq_init(&P);
   aa=pq_reg(&P);
-  u=pq_data(&P,aa);
+  u=&pq_data(&P,aa)->ud;
   u->id=65;
   bb=pq_reg(&P);
-  pq_data(&P,bb)->id=66;
+  pq_data(&P,bb)->ud.id=66;
   cc=pq_reg(&P);
-  pq_data(&P,cc)->id=67;
+  pq_data(&P,cc)->ud.id=67;
   printf("reg: %d,%d,%d\n",aa,bb,cc);
 
   pq_enq(&P,aa,10);
@@ -65,17 +66,17 @@ int main(void)
 
   pq_iter(&P,pr);
 
-  printf("topid=%d\n",pq_peek(&P));
-  u=pq_next(&P);
-  printf("next=%d\n",(u!=NULL?u->id:-1));
-  u=pq_next(&P);
-  printf("next=%d\n",(u!=NULL?u->id:-1));
-  u=pq_next(&P);
-  printf("next=%d\n",(u!=NULL?u->id:-1));
-  u=pq_next(&P);
-  printf("next=%d\n",(u!=NULL?u->id:-1));
-  u=pq_next(&P);
-  printf("next=%d\n",(u!=NULL?u->id:-1));
+  printf("topid=%d toppri=%ld\n",pq_peek(&P),pq_peekdata(&P)->pri);
+  q=pq_next(&P);
+  printf("next=%d\n",(q!=NULL?q->ud.id:-1));
+  q=pq_next(&P);
+  printf("next=%d\n",(q!=NULL?q->ud.id:-1));
+  q=pq_next(&P);
+  printf("next=%d\n",(q!=NULL?q->ud.id:-1));
+  q=pq_next(&P);
+  printf("next=%d\n",(q!=NULL?q->ud.id:-1));
+  q=pq_next(&P);
+  printf("next=%d\n",(q!=NULL?q->ud.id:-1));
 
   return(0);
 }
