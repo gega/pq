@@ -49,20 +49,21 @@ int main(void)
   struct pqi *q;
  
   pq_init(&P);
+
   aa=pq_reg(&P);
   u=&pq_data(&P,aa)->ud;
   u->id=65;
+
   bb=pq_reg(&P);
   pq_data(&P,bb)->ud.id=66;
+
   cc=pq_reg(&P);
   pq_data(&P,cc)->ud.id=67;
   printf("reg: %d,%d,%d\n",aa,bb,cc);
 
-  pq_enq(&P,aa,10);
-  pq_enq(&P,bb,3);
+  pq_enq(&P,aa,11);
   pq_enq(&P,bb,22);
-  pq_enq(&P,bb,1);
-  pq_enq(&P,cc,30);
+  pq_enq(&P,cc,33);
 
   pq_iter(&P,pr);
 

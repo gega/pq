@@ -67,7 +67,7 @@ void pq_enq(struct pq *p, int id, PQ_TYPE pri);
 struct pqi *pq_next(struct pq *p);
 
 
-#define pq_next(p) ({ int r=(p)->a[0].nx; (p)->a[0].nx=(p)->a[r].nx; (p)->a[r].nx=(p)->a[r].pr=r; (r==0?NULL:&(p)->a[r]); })
+#define pq_next(p) ({ int r=(p)->a[0].nx; (p)->a[0].nx=(p)->a[r].nx; (p)->a[(p)->a[0].nx].pr=0; (p)->a[r].nx=(p)->a[r].pr=r; (r==0?NULL:&(p)->a[r]); })
 #define pq_peek(p) ( (p)->a[0].nx )
 #define pq_peekdata(p) ( 0!=(p)->a[0].nx ? &((p)->a[(p)->a[0].nx]) : NULL )
 #define pq_data(p,x) ( &((p)->a[x]) )
