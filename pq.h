@@ -65,6 +65,7 @@ void pq_init(struct pq *p);
 int pq_reg(struct pq *p);
 void pq_enq(struct pq *p, int id, PQ_TYPE pri);
 struct pqi *pq_next(struct pq *p);
+void pq_del(struct pq *p, int id);
 
 
 #define pq_next(p) ({ int r=(p)->a[0].nx; (p)->a[0].nx=(p)->a[r].nx; (p)->a[(p)->a[0].nx].pr=0; (p)->a[r].nx=(p)->a[r].pr=r; (r==0?NULL:&(p)->a[r]); })
@@ -83,6 +84,13 @@ struct pqi *pq_next(struct pq *p);
           (p)->a[I_].nx=V_; \
           (p)->a[I_].pr=(p)->a[V_].pr; \
           (p)->a[V_].pr=I_; \
+          } while(0)
+#define pq_del(p,i) do { \
+          int I_=(i); \
+          (p)->a[(p)->a[I_].pr].nx=(p)->a[I_].nx; \
+          (p)->a[(p)->a[I_].nx].pr=(p)->a[I_].pr; \
+          (p)->a[I_].nx=I_; \
+          (p)->a[I_].pr=I_; \
           } while(0)
 #define pq_init(p) do { (p)->fre=1; (p)->a[0].pri=PQ_PRIFLOOR; bzero((p)->a,sizeof(struct pqi)*PQ_SIZE+1); for(int i=0;i<PQ_SIZE+1;i++) (p)->a[i].nx=(p)->a[i].pr=i; } while(0);
 #define pq_reg(p) ((p)->fre<(PQ_SIZE+1)?((p)->fre)++:0)
