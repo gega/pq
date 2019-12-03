@@ -1,10 +1,15 @@
 # pq
 priority queue for fixed number of entities
 
+main features:
+
 - malloc-free
 - single header
 - gcc only
 - not thread safe
+- designed for event driven systems
+
+The design is based on the use case of an event driven system where the main loop waits for the next event in a sleep mode to reduce power consumption and precesses the next event calling event handler(s) which may reinserting event requests in the queue for the future. In the majority of the similar systems there are only a limited number of sources of such events and those are known at compile time. This queue uses this assumption and has a fixed number of entries in the queue which is implemented as an array. To prevent the sudden queue full exceptions, all entities needs to allocate an entry in this array calling the pq_reg() API. Preferably these pq_reg() calls happens near boot time or application start time and the results should be assert()ed to find out queue size issues early. After each pq_reg() successfully registered an entity in the queue, it can be used safely to insert and reinsert requests. The pq_reg() will return an array index for the caller and pq_enq()ing on this ID will overwrite the previous value and also reorder the queue when needed.
 
 ## Configuration
 
