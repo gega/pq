@@ -1,7 +1,7 @@
 /*
     MIT License
 
-    Copyright (c) 2019 Gergely Gati -- gati.gergely@gmail.com
+    Copyright (c) 2019-2026 Gergely Gati -- gati.gergely@gmail.com
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -22,15 +22,6 @@
     SOFTWARE.
  */
 
-#ifndef PQ_H
-#define PQ_H
-
-#include <strings.h>
-
-#ifndef PQ_SIZE
-#define PQ_SIZE 50
-#endif
-
 #ifndef PQ_TYPE
 #define PQ_TYPE unsigned long
 #endif
@@ -43,7 +34,8 @@
 #undef PQ_STRUCT
 #endif
 
-
+#ifndef PQ_STRUCT_DEF
+#define PQ_STRUCT_DEF
 struct pqi
 {
   int pr;
@@ -53,20 +45,37 @@ struct pqi
   PQ_STRUCT ud;
   #endif
 };
+#endif
 
-struct pq
-{
-  int fre;
-  struct pqi a[PQ_SIZE+1];
-};
+struct pq;
 
-
-void pq_init(struct pq *p);
+void pq_init(struct pq *p, int cnt);
 int pq_reg(struct pq *p);
 void pq_enq(struct pq *p, int id, PQ_TYPE pri);
 struct pqi *pq_next(struct pq *p);
 void pq_del(struct pq *p, int id);
 
+#ifdef PQ_IMPLEMENTATION
+
+#ifndef PQ_H
+#define PQ_H
+
+#include <strings.h>
+
+#ifndef PQ_SIZE
+#error "PQ_SIZE must be defined"
+#endif
+
+struct pq
+{
+  int fre;
+  #if PQ_SIZE > 0
+  struct pqi a[PQ_SIZE+1];
+  #else
+  int cnt;
+  struct pqi a[];
+  #endif
+};
 
 #define pq_next(p) ({ int r=(p)->a[0].nx; (p)->a[0].nx=(p)->a[r].nx; (p)->a[(p)->a[0].nx].pr=0; (p)->a[r].nx=(p)->a[r].pr=r; (r==0?NULL:&(p)->a[r]); })
 #define pq_peek(p) ( (p)->a[0].nx )
@@ -92,8 +101,19 @@ void pq_del(struct pq *p, int id);
           (p)->a[I_].nx=I_; \
           (p)->a[I_].pr=I_; \
           } while(0)
-#define pq_init(p) do { (p)->fre=1; (p)->a[0].pri=PQ_PRIFLOOR; bzero((p)->a,sizeof(struct pqi)*PQ_SIZE+1); for(int i=0;i<PQ_SIZE+1;i++) (p)->a[i].nx=(p)->a[i].pr=i; } while(0);
-#define pq_reg(p) ((p)->fre<(PQ_SIZE+1)?((p)->fre)++:0)
+
+#if PQ_SIZE > 0
+#define pq_size(p) PQ_SIZE
+#define pq_init(p,c) do { (p)->fre=1;               (p)->a[0].pri=PQ_PRIFLOOR; bzero((p)->a,sizeof(struct pqi)*pq_size(p)+1); \
+                     for(int i=0;i<pq_size(p)+1;i++) (p)->a[i].nx=(p)->a[i].pr=i; } while(0);
+#else
+#define pq_size(p) (p->cnt)
+#define pq_init(p,c) do { (p)->fre=1; (p)->cnt=(c); (p)->a[0].pri=PQ_PRIFLOOR; bzero((p)->a,sizeof(struct pqi)*pq_size(p)+1); \
+                     for(int i=0;i<pq_size(p)+1;i++) (p)->a[i].nx=(p)->a[i].pr=i; } while(0);
+#endif
+
+#define pq_reg(p) ((p)->fre<(pq_size(p)+1)?((p)->fre)++:0)
 #define pq_iter(p,f) do { f(0,&(p)->a[0]); for(int i=(p)->a[0].nx;i>0;i=(p)->a[i].nx) f(i,&(p)->a[i]); } while(0)
 
+#endif
 #endif

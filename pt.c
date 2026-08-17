@@ -1,7 +1,7 @@
 /*
     MIT License
 
-    Copyright (c) 2019 Gergely Gati -- gati.gergely@gmail.com
+    Copyright (c) 2019-2026 Gergely Gati -- gati.gergely@gmail.com
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -32,52 +32,59 @@ struct dt
 };
 
 #define PQ_STRUCT struct dt
+#include "pq.h"
 
+#define PQ_SIZE 0
+#define PQ_IMPLEMENTATION
 #include "pq.h"
 
 
 void pr(int i, struct pqi *p)
 {
-  printf("PR %d: %ld (%d:%d)\n",i,p->pri,p->nx,p->pr);
+  printf("PR %d: %ld (%d:%d)\n", i, p->pri, p->nx, p->pr);
 }
 
 int main(void)
 {
-  struct pq P;
-  int aa,bb,cc;
+  struct pq *P;
+  int aa, bb, cc;
   struct dt *u;
   struct pqi *q;
- 
-  pq_init(&P);
 
-  aa=pq_reg(&P);
-  u=&pq_data(&P,aa)->ud;
-  u->id=65;
+  int cnt = 50;
+  P = calloc(sizeof (struct pq) + (cnt + 1) * sizeof (struct pqi), 1);
+  pq_init(P, cnt);
 
-  bb=pq_reg(&P);
-  pq_data(&P,bb)->ud.id=66;
+  aa = pq_reg(P);
+  u = &pq_data(P, aa)->ud;
+  u->id = 65;
 
-  cc=pq_reg(&P);
-  pq_data(&P,cc)->ud.id=67;
-  printf("reg: %d,%d,%d\n",aa,bb,cc);
+  bb = pq_reg(P);
+  pq_data(P, bb)->ud.id = 66;
 
-  pq_enq(&P,aa,11);
-  pq_enq(&P,bb,22);
-  pq_enq(&P,cc,33);
+  cc = pq_reg(P);
+  pq_data(P, cc)->ud.id = 67;
+  printf("reg: %d,%d,%d\n", aa, bb, cc);
 
-  pq_iter(&P,pr);
+  pq_enq(P, aa, 11);
+  pq_enq(P, bb, 22);
+  pq_enq(P, cc, 33);
 
-  printf("topid=%d toppri=%ld\n",pq_peek(&P),pq_peekdata(&P)->pri);
-  q=pq_next(&P);
-  printf("next=%d\n",(q!=NULL?q->ud.id:-1));
-  q=pq_next(&P);
-  printf("next=%d\n",(q!=NULL?q->ud.id:-1));
-  q=pq_next(&P);
-  printf("next=%d\n",(q!=NULL?q->ud.id:-1));
-  q=pq_next(&P);
-  printf("next=%d\n",(q!=NULL?q->ud.id:-1));
-  q=pq_next(&P);
-  printf("next=%d\n",(q!=NULL?q->ud.id:-1));
+  pq_iter(P, pr);
+
+  printf("topid=%d toppri=%ld\n", pq_peek(P), pq_peekdata(P)->pri);
+  q = pq_next(P);
+  printf("next=%d\n", (q != NULL ? q->ud.id : -1));
+  q = pq_next(P);
+  printf("next=%d\n", (q != NULL ? q->ud.id : -1));
+  q = pq_next(P);
+  printf("next=%d\n", (q != NULL ? q->ud.id : -1));
+  q = pq_next(P);
+  printf("next=%d\n", (q != NULL ? q->ud.id : -1));
+  q = pq_next(P);
+  printf("next=%d\n", (q != NULL ? q->ud.id : -1));
+
+  free(P);
 
   return(0);
 }
