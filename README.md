@@ -13,7 +13,8 @@ The design is based on the use case of an event driven system where the main loo
 
 ## Configuration
 
-__PQ_SIZE__: maximum number of registered entities for the queue (default: 50)
+__PQ_SIZE__: maximum number of registered entities for the queue, if giving
+   0, the memory and its item count should be provided by the user (default: 50)
 
 __PQ_TYPE__: type of the priority field of the queue (default: unsigned long)
 
@@ -23,11 +24,19 @@ __PQ_STRUCT__: additional struct data stored for items (default: undefined)
 
 ## Api
 
+### pq_size
+
+int pq_size(struct pq *p);
+
+return the total size of the queue
+
 ### pq_init
 
-void pq_init(struct pq *p);
+void pq_init(struct pq *p, int cnt);
 
-Initialize the given pq struct which should be provided by the caller.
+Initialize the given pq struct which should be provided by the caller. cnt
+is used only if PQ_SIZE == 0 when it should be the total size of the queue
+allocated by the caller.
 
 ### pq_req
 

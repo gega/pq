@@ -49,6 +49,7 @@ struct pqi
 
 struct pq;
 
+int pq_size(struct pq *p);
 void pq_init(struct pq *p, int cnt);
 int pq_reg(struct pq *p);
 void pq_enq(struct pq *p, int id, PQ_TYPE pri);
