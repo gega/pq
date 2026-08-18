@@ -42,14 +42,22 @@ allocated by the caller.
 
 int pq_reg(struct pq *p);
 
-Registering a new client for the queue. Returns the client ID (>0) which should be used when calling
+Register an entity and allocate its queue slot. Returns the client ID (>0) which should be used when calling
 __pq_enq()__. Returns 0 when no more space available.
 
 ### pq_enq
 
 void pq_enq(struct pq *p, int id, PQ_TYPE pri);
 
-Replacing the priority value of the corresponding client ID or add it if it was missing
+Replacing the priority value of the corresponding client ID or add it if it was
+missing.
+
+### pq_del
+
+void pq_del(struct pq *p, int id);
+
+Removes the client ID from the queue. An already removed item can be
+supplied for pq_del().
 
 ### pq_next
 

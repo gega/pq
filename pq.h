@@ -105,16 +105,16 @@ struct pq
 
 #if PQ_SIZE > 0
 #define pq_size(p) PQ_SIZE
-#define pq_init(p,c) do { (p)->fre=1;               (p)->a[0].pri=PQ_PRIFLOOR; bzero((p)->a,sizeof(struct pqi)*pq_size(p)+1); \
+#define pq_init(p,c) do { (p)->fre=1;               bzero((p)->a,sizeof(struct pqi)*(pq_size(p)+1)); (p)->a[0].pri=PQ_PRIFLOOR; \
                      for(int i=0;i<pq_size(p)+1;i++) (p)->a[i].nx=(p)->a[i].pr=i; } while(0);
 #else
 #define pq_size(p) (p->cnt)
-#define pq_init(p,c) do { (p)->fre=1; (p)->cnt=(c); (p)->a[0].pri=PQ_PRIFLOOR; bzero((p)->a,sizeof(struct pqi)*pq_size(p)+1); \
+#define pq_init(p,c) do { (p)->fre=1; (p)->cnt=(c); bzero((p)->a,sizeof(struct pqi)*(pq_size(p)+1)); (p)->a[0].pri=PQ_PRIFLOOR; \
                      for(int i=0;i<pq_size(p)+1;i++) (p)->a[i].nx=(p)->a[i].pr=i; } while(0);
 #endif
 
 #define pq_reg(p) ((p)->fre<(pq_size(p)+1)?((p)->fre)++:0)
-#define pq_iter(p,f) do { f(0,&(p)->a[0]); for(int i=(p)->a[0].nx;i>0;i=(p)->a[i].nx) f(i,&(p)->a[i]); } while(0)
+#define pq_iter(p,f) do { for(int i=(p)->a[0].nx;i>0;i=(p)->a[i].nx) f(i,&(p)->a[i]); } while(0)
 
 #endif
 #endif
