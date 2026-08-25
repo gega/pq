@@ -37,7 +37,7 @@ static int test_init(void)
 {
     struct pq q;
 
-    pq_init(&q, 123);
+    pq_init_static(&q, 0);
 
     CHECK(pq_size(&q) == 8);
     CHECK(pq_peek(&q) == 0);
@@ -51,7 +51,7 @@ static int test_registration(void)
 {
     struct pq q;
 
-    pq_init(&q, 0);
+    pq_init_static(&q, 0);
 
     for (int i = 1; i <= 8; i++) CHECK(pq_reg(&q) == i);
 
@@ -64,7 +64,7 @@ static int test_registration(void)
 static int test_single_entry(void)
 {
     struct pq q;
-    pq_init(&q, 0);
+    pq_init_static(&q, 0);
 
     int id = pq_reg(&q);
 
@@ -78,7 +78,7 @@ static int test_single_entry(void)
     CHECK(pq_peekdata(&q) == pq_data(&q, id));
     CHECK(pq_peekdata(&q)->pri == 100);
 
-    struct pqi *e = pq_next(&q);
+    pq_item_t *e = pq_next(&q);
 
     CHECK(e == pq_data(&q, id));
     CHECK(e->pri == 100);
@@ -92,7 +92,7 @@ static int test_single_entry(void)
 static int test_priority_order(void)
 {
     struct pq q;
-    pq_init(&q, 0);
+    pq_init_static(&q, 0);
 
     int a = pq_reg(&q);
     int b = pq_reg(&q);
@@ -125,7 +125,7 @@ static int test_priority_order(void)
 static int test_requeue(void)
 {
     struct pq q;
-    pq_init(&q, 0);
+    pq_init_static(&q, 0);
 
     int a = pq_reg(&q);
     int b = pq_reg(&q);
@@ -157,7 +157,7 @@ static int test_requeue(void)
 static int test_requeue_to_middle(void)
 {
     struct pq q;
-    pq_init(&q, 0);
+    pq_init_static(&q, 0);
 
     int a = pq_reg(&q);
     int b = pq_reg(&q);
@@ -181,7 +181,7 @@ static int test_requeue_to_middle(void)
 static int test_delete(void)
 {
     struct pq q;
-    pq_init(&q, 0);
+    pq_init_static(&q, 0);
 
     int a = pq_reg(&q);
     int b = pq_reg(&q);
@@ -212,7 +212,7 @@ static int test_delete(void)
 static int test_delete_first(void)
 {
     struct pq q;
-    pq_init(&q, 0);
+    pq_init_static(&q, 0);
 
     int a = pq_reg(&q);
     int b = pq_reg(&q);
@@ -236,7 +236,7 @@ static int test_delete_first(void)
 static int test_update_existing_entry(void)
 {
     struct pq q;
-    pq_init(&q, 0);
+    pq_init_static(&q, 0);
 
     int a = pq_reg(&q);
     int b = pq_reg(&q);
@@ -261,7 +261,7 @@ static int test_update_existing_entry(void)
 static int test_next_then_requeue(void)
 {
     struct pq q;
-    pq_init(&q, 0);
+    pq_init_static(&q, 0);
 
     int a = pq_reg(&q);
     int b = pq_reg(&q);
@@ -269,7 +269,7 @@ static int test_next_then_requeue(void)
     pq_enq(&q, a, 100);
     pq_enq(&q, b, 200);
 
-    struct pqi *e = pq_next(&q);
+    pq_item_t *e = pq_next(&q);
 
     CHECK(e == pq_data(&q, a));
     CHECK(pq_peek(&q) == b);
@@ -287,7 +287,7 @@ static int test_next_then_requeue(void)
 static int test_iter(void)
 {
     struct pq q;
-    pq_init(&q, 0);
+    pq_init_static(&q, 0);
 
     int a = pq_reg(&q);
     int b = pq_reg(&q);

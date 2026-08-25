@@ -32,14 +32,12 @@ struct dt
 };
 
 #define PQ_STRUCT struct dt
-#include "pq.h"
-
 #define PQ_SIZE 0
 #define PQ_IMPLEMENTATION
 #include "pq.h"
 
 
-void pr(int i, struct pqi *p)
+void pr(int i, pq_item_t *p)
 {
   printf("PR %d: %ld (%d:%d)\n", i, p->pri, p->nx, p->pr);
 }
@@ -49,11 +47,11 @@ int main(void)
   struct pq *P;
   int aa, bb, cc;
   struct dt *u;
-  struct pqi *q;
+  pq_item_t *q;
 
   int cnt = 50;
-  P = calloc(sizeof (struct pq) + (cnt + 1) * sizeof (struct pqi), 1);
-  pq_init(P, cnt);
+  P = calloc(sizeof (struct pq) + (cnt + 1) * sizeof(pq_item_t), 1);
+  pq_init_fam(P, cnt, 0);
 
   aa = pq_reg(P);
   u = &pq_data(P, aa)->ud;

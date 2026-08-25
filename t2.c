@@ -1,5 +1,7 @@
 #define PQ_SIZE 0
 #define PQ_TYPE unsigned long
+#define PQ_HAVE_STRING_H 0
+#define PQ_NAME_PREFIX t2_
 
 #define PQ_IMPLEMENTATION
 #include "pq.h"
@@ -11,14 +13,14 @@ int test(void)
 {
     const int cnt = 5;
 
-    struct pq *q = malloc(
-        sizeof(*q) + sizeof(struct pqi) * (cnt + 1)
+    struct t2_pq *q = malloc(
+        sizeof(*q) + sizeof(t2_pq_item_t) * (cnt + 1)
     );
 
     if (!q)
         return __LINE__;
 
-    pq_init(q, cnt);
+    pq_init_fam(q, cnt, 0);
 
     if (pq_size(q) != cnt)
         return __LINE__;
